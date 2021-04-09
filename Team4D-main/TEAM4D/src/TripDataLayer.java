@@ -77,6 +77,15 @@ public class TripDataLayer {
         conn.close();
     }
 
+    public void printAll() throws Exception{
+        String stmnt = "SELECT * FROM Trips";
+        PreparedStatement p = conn.prepareStatement(stmnt);
+        ResultSet rs = p.executeQuery();
+        while (rs.next()){
+            System.out.println(rs.getString("name"));
+        }
+    }
+
     public static void main(String[] args) throws Exception {
         TripDataLayer a = null;
         try{

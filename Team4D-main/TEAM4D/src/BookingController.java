@@ -34,10 +34,9 @@ public class BookingController{
         TripController t = new TripController();
         BookingController b = new BookingController();
         u.printAll();
+        t.printAll();
         u.createUser("andrith", "ats21");
-        System.out.println("User online");
         t.search();
-        System.out.println("searched");
         u.close();
         t.close();
         Trip[] trips = t.getTripList();
@@ -46,7 +45,7 @@ public class BookingController{
                 break;
             }
             b.createBooking(u.getUser(), trips[i]);
-            b.printAll();
         }
+        b.printAll();
     }
 }

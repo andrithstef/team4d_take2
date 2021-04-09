@@ -31,6 +31,10 @@ public class TripController {
         }
     }
 
+    public void printAll() throws Exception{
+        dl.printAll();
+    }
+
     public void sort() throws Exception{
         ResultSet rs = dl.sort();
         int index = 0;
