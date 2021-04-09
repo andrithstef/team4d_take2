@@ -23,6 +23,7 @@ public class TripDataLayer {
             /////////////////////////////////////////////////////////////////
             // Eyða töflu ef er til (Ekki gert í loka verkefninu)
             myStatement = conn.createStatement();
+            /*
             myStatement.executeUpdate("DROP TABLE IF EXISTS Trips");
 
             // Br til töfluna
@@ -39,7 +40,7 @@ public class TripDataLayer {
                 p.execute();
             }
             /////////////////////////////////////////////////////////////////
-
+            */
         }
         catch (SQLException e) {
             System.err.println(e.getMessage());

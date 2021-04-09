@@ -23,10 +23,10 @@ public class BookingDataLayer {
             /////////////////////////////////////////////////////////////////
             // Eyða töflu ef er til (Ekki gert í loka verkefninu)
             myStatement = conn.createStatement();
-            myStatement.executeUpdate("DROP TABLE IF EXISTS Bookings");
-
             // Br til töfluna
-            myStatement.executeUpdate("CREATE TABLE Booking(userName TEXT, tripid INTEGER, bookingID INTEGER UNIQUE, PRIMARY KEY(userName,tripid))");
+            myStatement.executeUpdate("CREATE TABLE IF NOT EXISTS Booking(userName TEXT, tripid INTEGER, bookingID INTEGER UNIQUE, PRIMARY KEY(userName,tripid))");
+
+
 
             /////////////////////////////////////////////////////////////////
 
@@ -35,6 +35,35 @@ public class BookingDataLayer {
             System.err.println(e.getMessage());
         }
     }
+
+    public void createBooking(String userName, int tripId) throws Exception{
+        String stmnt = "SELECT * FROM Booking WHERE userName == ? AND tripId == ?";
+        PreparedStatement p = conn.prepareStatement(stmnt);
+        p.setString(1, userName);
+        p.setString(2, Integer.toString(tripId));
+        ResultSet rs = p.executeQuery();
+        if (rs.next()){
+            System.out.println("This booking already exists");
+            return;
+        }
+        stmnt = "INSERT INTO Booking(userName, TripId) VALUES (?,?)";
+        p = conn.prepareStatement(stmnt);
+        p.setString(1, userName);
+        p.setString(2, Integer.toString(tripId));
+        p.executeUpdate();
+        System.out.println("Booking created");
+    }
+
+    public void printAll() throws Exception{
+        String stmnt = "SELECT * FROM Booking";
+        PreparedStatement p = conn.prepareStatement(stmnt);
+        ResultSet rs = p.executeQuery();
+        System.out.println("All bookings");
+        while(rs.next()){
+            System.out.println(rs.getString("userName") + " : " + rs.getString("tripId"));
+        }
+        System.out.println("**********************");
+    }
     
     Connection getConn() throws Exception{
         return conn;
@@ -42,44 +71,5 @@ public class BookingDataLayer {
 
     void close() throws Exception{
         conn.close();
-    }
-
-    public static void main(String[] args) throws Exception {
-        TripDataLayer a = null;
-        try{
-            a = new TripDataLayer();
-            System.out.println("TEST SORT");
-            ResultSet rs = a.sort();
-            while (rs.next()){
-                System.out.println(rs.getString("name") + " : " + rs.getInt("price"));
-            }
-            System.out.println("---------------------------------");
-            System.out.println("TEST SEARCH EMPTY");
-            rs = a.search();
-            while (rs.next()){
-                System.out.println(rs.getString("name") + " : " + rs.getInt("price"));
-            }
-            System.out.println("---------------------------------");
-            System.out.println("TEST SEARCH KAYAK");
-            rs = a.search("kayak");
-            while (rs.next()){
-                System.out.println(rs.getString("name") + " : " + rs.getInt("price"));
-            }
-
-        }
-        catch (SQLException e) {
-            System.err.println(e.getMessage());
-        }
-        finally {
-            try {
-                if (a != null) {
-                    if (a.getConn() != null)
-                        a.close();
-                }
-            }
-            catch (SQLException e) {
-                System.err.println(e);
-            }
-        }
     }
 }

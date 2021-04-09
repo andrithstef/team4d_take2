@@ -45,7 +45,7 @@ public class UserController{
     public static void main(String[] args) throws Exception{
         UserController uc = new UserController();
         uc.printAll();
-        uc.createUser("jojo", "jojo12");
+        uc.createUser("kondrakur", "konnibae");
         User logged = uc.getUser();
         System.out.println("logged in user: ");
         System.out.println(logged.getName());

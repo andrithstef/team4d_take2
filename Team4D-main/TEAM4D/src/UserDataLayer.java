@@ -17,7 +17,6 @@ public class UserDataLayer {
         try {
             // Tengjast við database
             conn = DriverManager.getConnection("jdbc:sqlite:team4d.db");
-
             /*
             //Ef við viljum eyða töflunni, búa til nýja og fylla inn í hana
             /////////////////////////////////////////////////////////////////
@@ -27,18 +26,6 @@ public class UserDataLayer {
 
             // Br til töfluna
             myStatement.executeUpdate("CREATE TABLE Users(userName TEXT PRIMARY KEY, email TEXT, id INTEGER UNIQUE)");
-
-            // Fylla inn í töfluna
-            String stmnt = "INSERT INTO Users(userName, email) VALUES(?,?)";
-            PreparedStatement p = conn.prepareStatement(stmnt);
-            while (!StdIn.isEmpty()) {
-                String userName = StdIn.readString();
-                String email = StdIn.readString();
-                p.setString(1,userName);
-                p.setString(2,email);
-                p.execute();
-            }
-            /////////////////////////////////////////////////////////////////
             */
         }
         catch (SQLException e) {
