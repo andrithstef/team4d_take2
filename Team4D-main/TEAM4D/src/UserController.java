@@ -1,3 +1,4 @@
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 public class UserController{
@@ -12,20 +13,29 @@ public class UserController{
     public void login() throws Exception{
         String userName = "andri";
         String email = "ats21";
-        int id = -1;
-        ResultSet rs = dl.getUser(userName, email);
-        while (rs.next()){
-            id = rs.getInt("id");
+        ResultSet rs = dl.getUser(userName,email);
+        if (rs.next()){
+            System.out.println("logging in...");
+            login = new User(userName, email, rs.getInt("id"));
         }
-        if (id == -1){
-            System.out.println("User does not exist");
-            return;
+        else{
+            System.out.println("no such user exists");
         }
-        login = new User(userName, email, id);
+    }
+
+    public void printAll() throws Exception{
+        System.out.println("All existing users");
+        dl.printAll();
+        System.out.println("*********************");
     }
 
     public void createUser(String userName, String email) throws Exception{
+        int id = dl.createUser(userName, email);
+        login = new User(userName, email, id);
+    }
 
+    public void close() throws Exception{
+        dl.close();
     }
 
     public User getUser() {
@@ -34,8 +44,11 @@ public class UserController{
 
     public static void main(String[] args) throws Exception{
         UserController uc = new UserController();
-        uc.login();
+        uc.printAll();
+        uc.createUser("jojo", "jojo12");
         User logged = uc.getUser();
+        System.out.println("logged in user: ");
         System.out.println(logged.getName());
+        uc.close();
     }
 }

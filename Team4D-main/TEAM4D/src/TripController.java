@@ -1,4 +1,5 @@
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class TripController {
 
@@ -38,15 +39,26 @@ public class TripController {
         }
     }
 
+    public void close() throws Exception{
+        dl.close();
+    }
+
     public static void main(String[] args) throws Exception {
-        TripController tc = new TripController();
-        tc.sort();
-        Trip[] listi = tc.getTripList();
-        for (int i = 0; i<10;i++) {
-            if (listi[i] == null) {
-                break;
+        try {
+            TripController tc;
+            tc = new TripController();
+            tc.sort();
+            Trip[] listi = tc.getTripList();
+            for (int i = 0; i < 10; i++) {
+                if (listi[i] == null) {
+                    break;
+                }
+                System.out.println(listi[i].getName() + " : " + listi[i].getPrice());
             }
-            System.out.println(listi[i].getName() + " : " + listi[i].getPrice());
+            tc.close();
+        }
+        catch (SQLException e) {
+            System.err.println(e.getMessage());
         }
     }
 }

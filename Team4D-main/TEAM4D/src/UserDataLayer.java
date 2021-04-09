@@ -18,7 +18,7 @@ public class UserDataLayer {
             // Tengjast við database
             conn = DriverManager.getConnection("jdbc:sqlite:team4d.db");
 
-
+            /*
             //Ef við viljum eyða töflunni, búa til nýja og fylla inn í hana
             /////////////////////////////////////////////////////////////////
             // Eyða töflu ef er til (Ekki gert í loka verkefninu)
@@ -39,7 +39,7 @@ public class UserDataLayer {
                 p.execute();
             }
             /////////////////////////////////////////////////////////////////
-
+            */
         }
         catch (SQLException e) {
             System.err.println(e.getMessage());
@@ -53,6 +53,29 @@ public class UserDataLayer {
         while (rs.next()){
             System.out.println(rs.getString("userName") + " : " + rs.getString("email"));
         }
+    }
+
+    int createUser(String userName, String email) throws Exception{
+        String stmnt = "SELECT * FROM Users WHERE userName == ?";
+        PreparedStatement p = conn.prepareStatement(stmnt);
+        p.setString(1, userName);
+        ResultSet rs = p.executeQuery();
+        if (rs.next()){
+            System.out.println("User already exists");
+            return -1;
+        }
+        stmnt = "INSERT INTO Users(userName, email) VALUES(?,?)";
+        p = conn.prepareStatement(stmnt);
+        p.setString(1, userName);
+        p.setString(2,email);
+        p.executeUpdate();
+        stmnt = "SELECT id FROM Users WHERE userName == ?";
+        p = conn.prepareStatement(stmnt);
+        p.setString(1, userName);
+        rs = p.executeQuery();
+        rs.next();
+        int id = rs.getInt("id");
+        return id;
     }
 
     ResultSet getUser(String userName, String email) throws Exception{
