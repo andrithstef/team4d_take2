@@ -90,12 +90,17 @@ public class ReviewDataLayer {
         return rs;
     }
 
+
     Connection getConn() throws Exception{
         return conn;
     }
 
     void close() throws Exception{
         conn.close();
+    }
+
+    void connect() throws Exception{
+        conn = DriverManager.getConnection("jdbc:sqlite:team4d.db");
     }
 
     //Test

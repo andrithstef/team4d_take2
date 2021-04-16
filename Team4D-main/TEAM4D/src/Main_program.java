@@ -37,22 +37,38 @@ public class Main_program {
         tc.close();
     }
 
+    public void sort() throws Exception{
+        tc.connect();
+        tc.sort();
+        Trip[] results = tc.getTripList();
+        System.out.println("trips sorted by price:\n");
+        for (int i = 0; i<results.length; i++){
+            if (results[i]== null){
+                break;
+            }
+            System.out.println(results[i].getName() + " : " + results[i].getPrice() + " : " + results[i].getId());
+        }
+        tc.close();
+    }
+
     public void book() throws Exception{
         tc.connect();
         System.out.println("Please enter the trip ID:");
         int id = StdIn.readInt();
         Trip desired = tc.getTrip(id);
         tc.close();
-        bc.createBooking(uc.getUser(),desired);
-        System.out.println("ID");
-        System.out.println(desired.getId());
-        System.out.println(desired.getPrice());
-        bc.printAll();
+        if (desired.getAvailableSeats() <= 0){
+            System.out.println("No seats availible");
+        }
+        else {
+            bc.createBooking(uc.getUser(), desired);
+            System.out.println("ID");
+            System.out.println(desired.getId());
+            System.out.println(desired.getPrice());
+            bc.printAll();
+        }
     }
 
-    public void review() throws Exception{
-
-    }
 
     public void run() throws Exception{
         boolean cont = true;
@@ -74,7 +90,7 @@ public class Main_program {
                 System.out.println(allTrips[i].getName() + " : " + allTrips[i].getPrice() + " : " +allTrips[i].getId());
             }
             while (cont) {
-                System.out.println("What would you like to do?\ns: search \nb: book \nr: review trip\nq: quit");
+                System.out.println("What would you like to do?\ns: search \np:sort based on price \nb: book \nr: review trip\nq: quit");
                 String input = StdIn.readString();
                 if (input.equals("q")){
                     System.out.println("Exiting program");
@@ -87,11 +103,11 @@ public class Main_program {
                 else if (input.equals("s")){
                     search();
                 }
+                else if (input.equals("p")){
+                    sort();
+                }
                 else if (input.equals("b")){
                     book();
-                }
-                else if (input.equals("r")){
-                    System.out.println("Review");
                 }
             }
         }

@@ -54,6 +54,14 @@ public class BookingDataLayer {
         System.out.println("Booking created");
     }
 
+    public ResultSet getBookings(String userName) throws Exception{
+        String stmnt = "SELECT * FROM Booking WHERE userName == ?";
+        PreparedStatement p = conn.prepareStatement(stmnt);
+        p.setString(1,userName);
+        ResultSet rs = p.executeQuery();
+        return rs;
+    }
+
     public void printAll() throws Exception{
         String stmnt = "SELECT * FROM Booking";
         PreparedStatement p = conn.prepareStatement(stmnt);

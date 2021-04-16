@@ -16,8 +16,10 @@ public class ReviewController {
         rdl = new ReviewDataLayer();
     }
 
+
     //Skilar Öllum reviews fyrir ákveðið trip
     public Review[] getReviewList(Trip trip) throws Exception {
+        reviewList = new Review[20];
         ResultSet rs = rdl.getReviews(trip);
         int index = 0;
         while (rs.next()){
@@ -47,6 +49,14 @@ public class ReviewController {
     public void createReview(User user, Trip trip, int score, String title, String body) throws Exception {
 
         rdl.createNewReview(user.getName(), trip.getId(), score, title, body);
+    }
+
+    public void close() throws Exception{
+        rdl.close();
+    }
+
+    public void connect() throws Exception{
+        rdl.connect();
     }
 
     //Test

@@ -1,3 +1,6 @@
+import java.awt.print.Book;
+import java.sql.ResultSet;
+
 public class BookingController{
 
     private Booking[] bookingList;
@@ -16,6 +19,7 @@ public class BookingController{
     public void printAll() throws Exception{
         dl.printAll();
     }
+
 
     public void createBooking(User user, Trip trip) throws Exception{
         String userName = user.getName();
