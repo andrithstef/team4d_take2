@@ -52,10 +52,12 @@ public class UserController{
         UserController uc = new UserController();
         uc.login("temp", "basicEmal123");
         User logged = uc.getUser();
+        uc.printAll();
         if (uc.isLogin()) {
             System.out.println("logged in user: ");
             System.out.println(logged.getName());
             uc.close();
         }
+
     }
 }

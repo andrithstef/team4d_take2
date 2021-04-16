@@ -77,6 +77,10 @@ public class BookingDataLayer {
         return conn;
     }
 
+    void connect() throws Exception{
+        conn = DriverManager.getConnection("jdbc:sqlite:team4d.db");
+    }
+
     void close() throws Exception{
         conn.close();
     }

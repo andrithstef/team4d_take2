@@ -48,7 +48,7 @@ public class TripDataLayer {
     }
 
     ResultSet search(String querie) throws Exception{
-        String stmnt = "SELECT * from Trips WHERE NAME LIKE ?";
+        String stmnt = "SELECT * from Trip WHERE NAME LIKE ?";
         PreparedStatement p = conn.prepareStatement(stmnt);
         p.setString(1,"%"+querie+"%");
         ResultSet rs = p.executeQuery();
@@ -56,14 +56,14 @@ public class TripDataLayer {
     }
 
     ResultSet search() throws Exception{
-        String stmnt = "SELECT * from Trips";
+        String stmnt = "SELECT * from Trip";
         PreparedStatement p = conn.prepareStatement(stmnt);
         ResultSet rs = p.executeQuery();
         return rs;
     }
 
     ResultSet getTrip(int ID) throws Exception{
-        String stmnt = "SELECT * from Trips WHERE id == ?";
+        String stmnt = "SELECT * from Trip WHERE id == ?";
         PreparedStatement p = conn.prepareStatement(stmnt);
         p.setInt(1,ID);
         ResultSet rs = p.executeQuery();
@@ -71,7 +71,7 @@ public class TripDataLayer {
     }
 
     ResultSet sort() throws Exception{
-        String stmnt = "SELECT * FROM Trips ORDER BY price ASC, name ASC";
+        String stmnt = "SELECT * FROM Trip ORDER BY price ASC, name ASC";
         PreparedStatement p = conn.prepareStatement(stmnt);
         ResultSet rs = p.executeQuery();
         return rs;
@@ -90,12 +90,20 @@ public class TripDataLayer {
     }
 
     public void printAll() throws Exception{
-        String stmnt = "SELECT * FROM Trips";
+        String stmnt = "SELECT * FROM Trip";
         PreparedStatement p = conn.prepareStatement(stmnt);
         ResultSet rs = p.executeQuery();
         while (rs.next()){
             System.out.println(rs.getString("name"));
         }
+    }
+
+    public void removeSeat(int id, int seats) throws Exception{
+        String stmnt = "Update trip set(availableSeats) == ? WHERE id == ?";
+        PreparedStatement p = conn.prepareStatement(stmnt);
+        p.setString(1,Integer.toString(seats));
+        p.setString(2,Integer.toString(id));
+        p.executeUpdate();
     }
 
     public static void main(String[] args) throws Exception {

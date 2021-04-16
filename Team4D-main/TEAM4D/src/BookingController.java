@@ -20,6 +20,14 @@ public class BookingController{
         dl.printAll();
     }
 
+    public void connect() throws Exception{
+        dl.connect();
+    }
+
+    public void close() throws Exception{
+        dl.close();
+    }
+
 
     public void createBooking(User user, Trip trip) throws Exception{
         String userName = user.getName();

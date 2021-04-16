@@ -72,10 +72,10 @@ public class Main_program {
         }
         else {
             bc.createBooking(uc.getUser(), desired);
-            System.out.println("ID");
-            System.out.println(desired.getId());
-            System.out.println(desired.getPrice());
-            bc.printAll();
+            bc.close();
+            tc.connect();
+            tc.removeSeat(desired);
+            tc.close();
         }
     }
 
@@ -100,7 +100,7 @@ public class Main_program {
                 System.out.println(allTrips[i].getName() + " : " + allTrips[i].getPrice() + " : " +allTrips[i].getId());
             }
             while (cont) {
-                System.out.println("What would you like to do?\ns: search \np:sort based on price \nb: book \nr: review trip\nc: change user \nq: quit");
+                System.out.println("What would you like to do?\ns: search \np :sort based on price \nb: book \nr: review trip\nc: change user \nq: quit");
                 String input = StdIn.readString();
                 if (input.equals("q")){
                     System.out.println("Exiting program");
