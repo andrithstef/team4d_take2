@@ -34,7 +34,7 @@ public class UserDataLayer {
     }
 
     void printAll() throws Exception{
-        String stmnt = "SELECT * from Users";
+        String stmnt = "SELECT * from User";
         PreparedStatement p = conn.prepareStatement(stmnt);
         ResultSet rs = p.executeQuery();
         while (rs.next()){
@@ -44,7 +44,7 @@ public class UserDataLayer {
 
     int createUser(String userName, String email) throws Exception{
         // ? er breyta, setstring setur gildi
-        String stmnt = "SELECT * FROM Users WHERE userName == ?";
+        String stmnt = "SELECT * FROM User WHERE userName == ?";
         PreparedStatement p = conn.prepareStatement(stmnt);
         p.setString(1, userName);
         ResultSet rs = p.executeQuery();
@@ -53,12 +53,12 @@ public class UserDataLayer {
             return -1;
         }
         System.out.println("Creating new user...");
-        stmnt = "INSERT INTO Users(userName, email) VALUES(?,?)";
+        stmnt = "INSERT INTO User(userName, email) VALUES(?,?)";
         p = conn.prepareStatement(stmnt);
         p.setString(1, userName);
         p.setString(2,email);
         p.executeUpdate();
-        stmnt = "SELECT id FROM Users WHERE userName == ?";
+        stmnt = "SELECT id FROM User WHERE userName == ?";
         p = conn.prepareStatement(stmnt);
         p.setString(1, userName);
         rs = p.executeQuery();
@@ -68,7 +68,7 @@ public class UserDataLayer {
     }
 
     ResultSet getUser(String userName, String email) throws Exception{
-        String stmnt = "SELECT * from Users WHERE userName == ? AND email == ?";
+        String stmnt = "SELECT * from User WHERE userName == ? AND email == ?";
         PreparedStatement p = conn.prepareStatement(stmnt);
         p.setString(1, userName);
         p.setString(2, email);
