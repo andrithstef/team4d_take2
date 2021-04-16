@@ -72,6 +72,7 @@ public class Main_program {
         }
         else {
             bc.createBooking(uc.getUser(), desired);
+            bc.printAll();
             bc.close();
             tc.connect();
             tc.removeSeat(desired);
