@@ -39,6 +39,7 @@ public class ReviewDataLayer {
         }
     }
 
+    //Skilar öllum trips í db
     void printAll() throws Exception{
         String stmnt = "SELECT * from Reviews";
         PreparedStatement p = conn.prepareStatement(stmnt);
@@ -50,10 +51,19 @@ public class ReviewDataLayer {
         }
     }
 
+    //Býr til nýtt review
     void createNewReview(String user, int id, int score, String title, String body) throws Exception{
-
-        String stmnt = "INSERT INTO Reviews(user, tripId, score, title, body) VALUES(?,?,?,?,?)";
+        String stmnt = "SELECT * FROM Reviews WHERE user==? AND tripId==?";
         PreparedStatement p = conn.prepareStatement(stmnt);
+        p.setString(1, user);
+        p.setInt(2, id);
+        ResultSet rs = p.executeQuery();
+        if (rs.next()){
+            System.out.println("Review already exists");
+            return;
+        }
+        stmnt = "INSERT INTO Reviews(user, tripId, score, title, body) VALUES(?,?,?,?,?)";
+        p = conn.prepareStatement(stmnt);
         p.setString(1, user);
         p.setInt(2,id);
         p.setInt(3,score);
@@ -62,6 +72,7 @@ public class ReviewDataLayer {
         p.executeUpdate();
     }
 
+    //Eyðir review
     void deleteReview(String userName, int id) throws Exception {
         String stmnt = "DELETE FROM Reviews WHERE user=? AND tripId=?";
         PreparedStatement p = conn.prepareStatement(stmnt);
@@ -70,6 +81,7 @@ public class ReviewDataLayer {
         p.executeUpdate();
     }
 
+    //Skilar öllum reviews fyrir ákveðið trip
     ResultSet getReviews(Trip trip) throws Exception {
         int id = trip.getId();
         String stmnt = "SELECT * from Reviews WHERE tripId == "+id;
@@ -77,6 +89,7 @@ public class ReviewDataLayer {
         ResultSet rs = p.executeQuery();
         return rs;
     }
+
     Connection getConn() throws Exception{
         return conn;
     }
@@ -85,6 +98,7 @@ public class ReviewDataLayer {
         conn.close();
     }
 
+    //Test
     public static void main(String[] args) throws Exception {
         ReviewDataLayer a = null;
         try{
