@@ -50,9 +50,17 @@ public class ReviewDataLayer {
     }
 
     void createNewReview(String user, int id, int score, String title, String body) throws Exception{
-
-        String stmnt = "INSERT INTO Reviews(user, tripId, score, title, body) VALUES(?,?,?,?,?)";
+        String stmnt = "SELECT * FROM Reviews WHERE user==? AND tripId==?";
         PreparedStatement p = conn.prepareStatement(stmnt);
+        p.setString(1, user);
+        p.setInt(2, id);
+        ResultSet rs = p.executeQuery();
+        if (rs.next()){
+            System.out.println("Review already exists");
+            return;
+        }
+        stmnt = "INSERT INTO Reviews(user, tripId, score, title, body) VALUES(?,?,?,?,?)";
+        p = conn.prepareStatement(stmnt);
         p.setString(1, user);
         p.setInt(2,id);
         p.setInt(3,score);
