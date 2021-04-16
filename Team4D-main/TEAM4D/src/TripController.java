@@ -16,6 +16,7 @@ public class TripController {
     }
 
     public void search() throws Exception{
+        tripList = new Trip[20];
         ResultSet rs = dl.search();
         int index = 0;
         while (rs.next()){
@@ -24,6 +25,7 @@ public class TripController {
     }
 
     public void search(String querie) throws Exception{
+        tripList = new Trip[20];
         ResultSet rs = dl.search(querie);
         int index = 0;
         while (rs.next()){
@@ -31,16 +33,28 @@ public class TripController {
         }
     }
 
+    public Trip getTrip(int ID) throws Exception{
+        ResultSet rs = dl.getTrip(ID);
+        rs.next();
+        Trip result = new Trip(rs.getString("name"),rs.getInt("price"),rs.getInt("id"));
+        return result;
+    }
+
     public void printAll() throws Exception{
         dl.printAll();
     }
 
     public void sort() throws Exception{
+        tripList = new Trip[20];
         ResultSet rs = dl.sort();
         int index = 0;
         while (rs.next()){
             tripList[index++] = new Trip(rs.getString("name"), rs.getInt("id"), rs.getInt("price"));
         }
+    }
+
+    public void connect() throws Exception{
+        dl.connect();
     }
 
     public void close() throws Exception{

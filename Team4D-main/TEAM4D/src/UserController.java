@@ -3,16 +3,14 @@ import java.sql.ResultSet;
 
 public class UserController{
 
-    private User login;
+    private User login = null;
     private UserDataLayer dl;
 
     public UserController() throws Exception{
         dl = new UserDataLayer();
     }
 
-    public void login() throws Exception{
-        String userName = "andri";
-        String email = "ats21";
+    public void login(String userName, String email) throws Exception{
         ResultSet rs = dl.getUser(userName,email);
         if (rs.next()){
             System.out.println("logging in...");
@@ -42,13 +40,18 @@ public class UserController{
         return login;
     }
 
+    public boolean isLogin(){
+        return login != null;
+    }
+
     public static void main(String[] args) throws Exception{
         UserController uc = new UserController();
-        uc.printAll();
-        uc.createUser("kondrakur", "konnibae");
+        uc.login("temp", "basicEmal123");
         User logged = uc.getUser();
-        System.out.println("logged in user: ");
-        System.out.println(logged.getName());
-        uc.close();
+        if (uc.isLogin()) {
+            System.out.println("logged in user: ");
+            System.out.println(logged.getName());
+            uc.close();
+        }
     }
 }

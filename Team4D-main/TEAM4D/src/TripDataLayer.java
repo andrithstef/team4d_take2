@@ -62,6 +62,14 @@ public class TripDataLayer {
         return rs;
     }
 
+    ResultSet getTrip(int ID) throws Exception{
+        String stmnt = "SELECT * from Trips WHERE id == ?";
+        PreparedStatement p = conn.prepareStatement(stmnt);
+        p.setInt(1,ID);
+        ResultSet rs = p.executeQuery();
+        return rs;
+    }
+
     ResultSet sort() throws Exception{
         String stmnt = "SELECT * FROM Trips ORDER BY price ASC, name ASC";
         PreparedStatement p = conn.prepareStatement(stmnt);
@@ -75,6 +83,10 @@ public class TripDataLayer {
 
     void close() throws Exception{
         conn.close();
+    }
+
+    public void connect() throws Exception{
+        conn = DriverManager.getConnection("jdbc:sqlite:team4d.db");
     }
 
     public void printAll() throws Exception{

@@ -1,4 +1,5 @@
 import edu.princeton.cs.algs4.StdIn;
+import edu.princeton.cs.algs4.StdOut;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -19,7 +20,7 @@ public class ReviewDataLayer {
             // Tengjast við database
             conn = DriverManager.getConnection("jdbc:sqlite:team4d.db");
 
-            /*
+
             //Ef við viljum eyða töflunni, búa til nýja og fylla inn í hana
             /////////////////////////////////////////////////////////////////
             // Eyða töflu ef er til (Ekki gert í loka verkefninu)
@@ -31,7 +32,7 @@ public class ReviewDataLayer {
 
             /////////////////////////////////////////////////////////////////
 
-             */
+
         }
         catch (SQLException e) {
             System.err.println(e.getMessage());

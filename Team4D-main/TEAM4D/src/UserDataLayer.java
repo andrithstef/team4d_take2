@@ -43,14 +43,16 @@ public class UserDataLayer {
     }
 
     int createUser(String userName, String email) throws Exception{
+        // ? er breyta, setstring setur gildi
         String stmnt = "SELECT * FROM Users WHERE userName == ?";
         PreparedStatement p = conn.prepareStatement(stmnt);
         p.setString(1, userName);
         ResultSet rs = p.executeQuery();
         if (rs.next()){
-            System.out.println("User already exists");
+            System.out.println("User already exists\nLogging in...");
             return -1;
         }
+        System.out.println("Creating new user...");
         stmnt = "INSERT INTO Users(userName, email) VALUES(?,?)";
         p = conn.prepareStatement(stmnt);
         p.setString(1, userName);
