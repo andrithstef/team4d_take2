@@ -20,7 +20,9 @@ public class TripController {
         ResultSet rs = dl.search();
         int index = 0;
         while (rs.next()){
-            tripList[index++] = new Trip(rs.getString("name"), rs.getInt("id"), rs.getInt("price"));
+            tripList[index++] = new Trip(rs.getString("name"), rs.getInt("id"), rs.getInt("price"), rs.getString("location"), rs.getInt("availableSeats"),
+                    rs.getBoolean("accessibility"), rs.getBoolean("meals"), rs.getBoolean("vegan"), rs.getString("activityType"), rs.getDouble("popularity"),
+                    rs.getDouble("discount"), rs.getString("time"), rs.getDouble("rating"));
         }
     }
 
@@ -29,14 +31,18 @@ public class TripController {
         ResultSet rs = dl.search(querie);
         int index = 0;
         while (rs.next()){
-            tripList[index++] = new Trip(rs.getString("name"), rs.getInt("id"), rs.getInt("price"));
+            tripList[index++] = new Trip(rs.getString("name"), rs.getInt("id"), rs.getInt("price"), rs.getString("location"), rs.getInt("availableSeats"),
+                    rs.getBoolean("accessibility"), rs.getBoolean("meals"), rs.getBoolean("vegan"), rs.getString("activityType"), rs.getDouble("popularity"),
+                    rs.getDouble("discount"), rs.getString("time"), rs.getDouble("rating"));
         }
     }
 
     public Trip getTrip(int ID) throws Exception{
         ResultSet rs = dl.getTrip(ID);
         rs.next();
-        Trip result = new Trip(rs.getString("name"),rs.getInt("price"),rs.getInt("id"));
+        Trip result = new Trip(rs.getString("name"), rs.getInt("id"), rs.getInt("price"), rs.getString("location"), rs.getInt("availableSeats"),
+                rs.getBoolean("accessibility"), rs.getBoolean("meals"), rs.getBoolean("vegan"), rs.getString("activityType"), rs.getDouble("popularity"),
+                rs.getDouble("discount"), rs.getString("time"), rs.getDouble("rating"));
         return result;
     }
 
