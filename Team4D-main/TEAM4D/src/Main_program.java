@@ -51,6 +51,16 @@ public class Main_program {
         tc.close();
     }
 
+    public void change() throws Exception{
+        uc.connect();
+        System.out.println("please enter username and email:");
+        String userName = StdIn.readString();
+        String email = StdIn.readString();
+        uc.createUser(userName,email);
+        System.out.println("Currently logged in as:");
+        System.out.println(uc.getUser().getName() + "\n");
+    }
+
     public void book() throws Exception{
         tc.connect();
         System.out.println("Please enter the trip ID:");
@@ -90,7 +100,7 @@ public class Main_program {
                 System.out.println(allTrips[i].getName() + " : " + allTrips[i].getPrice() + " : " +allTrips[i].getId());
             }
             while (cont) {
-                System.out.println("What would you like to do?\ns: search \np:sort based on price \nb: book \nr: review trip\nq: quit");
+                System.out.println("What would you like to do?\ns: search \np:sort based on price \nb: book \nr: review trip\nc: change user \nq: quit");
                 String input = StdIn.readString();
                 if (input.equals("q")){
                     System.out.println("Exiting program");
@@ -108,6 +118,9 @@ public class Main_program {
                 }
                 else if (input.equals("b")){
                     book();
+                }
+                else if (input.equals("c")){
+                    change();
                 }
             }
         }

@@ -84,6 +84,10 @@ public class UserDataLayer {
         conn.close();
     }
 
+    void connect() throws Exception{
+        conn = DriverManager.getConnection("jdbc:sqlite:team4d.db");
+    }
+
     public static void main(String[] args) throws Exception {
         UserDataLayer a = null;
         try{

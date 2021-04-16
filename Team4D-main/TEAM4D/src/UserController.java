@@ -36,6 +36,10 @@ public class UserController{
         dl.close();
     }
 
+    public void connect() throws Exception{
+        dl.connect();
+    }
+
     public User getUser() {
         return login;
     }
