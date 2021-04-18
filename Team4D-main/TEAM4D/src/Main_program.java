@@ -92,7 +92,7 @@ public class Main_program {
             System.out.println(bookings[i].getTripName() + " : "+ bookings[i].getTripId());
         }
     }
-    public void review(User user, Trip trip) throws Exception{
+    public void review(User user, Trip trip) throws Exception {
         rc.connect();
         System.out.println("Please enter score, title of review, then review text:");
         int tripScore = StdIn.readInt();
@@ -100,6 +100,36 @@ public class Main_program {
         String reviewText = StdIn.readString();
         rc.createReview(user, trip, tripScore, reviewTitle, reviewText);
         rc.close();
+    }
+
+    public void seeReview() throws Exception{
+        System.out.println("Select ID of trip to see review of");
+        String id = StdIn.readString();
+        tc.connect();
+        Trip trip = tc.getTrip(Integer.parseInt(id));
+        tc.close();
+        rc.connect();
+        Review[] r = rc.getReviewList(trip);
+        rc.close();
+        int score = 0;
+        int amt = 0;
+        for (int i = 0; i<r.length; i++){
+            if (r[i] == null){
+                break;
+            }
+            System.out.println(r[i].getTitle());
+            score += r[i].getScore();
+            amt += 1;
+        }
+        if (amt == 0){
+            System.out.println("this trip has no reviews");
+        }
+        else {
+            float rating = score / amt;
+            System.out.println("trip rating: " + rating);
+        }
+    }
+
 
     //DEBUG MODE
     public void debug() throws Exception{
@@ -123,9 +153,6 @@ public class Main_program {
         else{
             System.out.println("invalid input");
         }
-    }
-
-
     }
 
     public void run() throws Exception{
@@ -166,6 +193,9 @@ public class Main_program {
                 }
                 else if (input.equals("c")){
                     change();
+                }
+                else if (input.equals("r")){
+                    review();
                 }
                 else if (input.equals("u")){
                     info(uc.getUser());
