@@ -46,6 +46,10 @@ public class TripController {
         return result;
     }
 
+    public void printSeats() throws Exception{
+        dl.printSeats();
+    }
+
     public void removeSeat(Trip trip) throws Exception{
         int id = trip.getId();
         int seats = trip.getAvailableSeats()-1;

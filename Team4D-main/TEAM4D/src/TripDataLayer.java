@@ -106,6 +106,15 @@ public class TripDataLayer {
         p.executeUpdate();
     }
 
+    public void printSeats() throws Exception{
+        String stmnt = "SELECT name, availableSeats FROM Trip";
+        PreparedStatement p = conn.prepareStatement(stmnt);
+        ResultSet rs = p.executeQuery();
+        while (rs.next()){
+            System.out.println(rs.getString("name") + " : " + rs.getString("availableSeats"));
+        }
+    }
+
     public static void main(String[] args) throws Exception {
         TripDataLayer a = null;
         try{

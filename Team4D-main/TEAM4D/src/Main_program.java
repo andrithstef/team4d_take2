@@ -58,6 +58,7 @@ public class Main_program {
         uc.createUser(userName);
         System.out.println("Currently logged in as:");
         System.out.println(uc.getUser().getName() + "\n");
+        uc.close();
     }
 
     public void book() throws Exception{
@@ -99,6 +100,30 @@ public class Main_program {
         String reviewText = StdIn.readString();
         rc.createReview(user, trip, tripScore, reviewTitle, reviewText);
         rc.close();
+
+    //DEBUG MODE
+    public void debug() throws Exception{
+        System.out.println("u: show all users\nb: show all bookings\ns: print seats");
+        String inp = StdIn.readString();
+        if (inp.equals("u")){
+            uc.connect();
+            uc.printAll();
+            uc.close();
+        }
+        else if(inp.equals("b")){
+            bc.connect();
+            bc.printAll();
+            bc.close();
+        }
+        else if(inp.equals("s")){
+            tc.connect();
+            tc.printSeats();
+            tc.close();
+        }
+        else{
+            System.out.println("invalid input");
+        }
+    }
 
 
     }
@@ -145,11 +170,9 @@ public class Main_program {
                 else if (input.equals("u")){
                     info(uc.getUser());
                 }
-                //Debugging not in final
+                //Debugging not in final project
                 else if (input.equals("d")){
-                    uc.connect();
-                    uc.printAll();
-                    uc.close();
+                    debug();
                 }
                 else{
                     System.out.println("invalid input");
