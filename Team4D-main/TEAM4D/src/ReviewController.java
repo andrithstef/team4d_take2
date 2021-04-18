@@ -46,9 +46,9 @@ public class ReviewController {
     }
 
     //Býr til nýtt review
-    public void createReview(User user, Trip trip, int score, String title, String body) throws Exception {
+    public void createReview(User user, int tripId, int score, String title, String body) throws Exception {
 
-        rdl.createNewReview(user.getName(), trip.getId(), score, title, body);
+        rdl.createNewReview(user.getName(), tripId, score, title, body);
     }
 
     public void close() throws Exception{

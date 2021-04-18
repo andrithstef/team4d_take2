@@ -92,13 +92,15 @@ public class Main_program {
             System.out.println(bookings[i].getTripName() + " : "+ bookings[i].getTripId());
         }
     }
-    public void review(User user, Trip trip) throws Exception {
+    public void review(User user) throws Exception {
+        System.out.println("Select ID of trip to review");
+        int id = StdIn.readInt();
         rc.connect();
         System.out.println("Please enter score, title of review, then review text:");
         int tripScore = StdIn.readInt();
         String reviewTitle = StdIn.readString();
         String reviewText = StdIn.readString();
-        rc.createReview(user, trip, tripScore, reviewTitle, reviewText);
+        rc.createReview(user, id, tripScore, reviewTitle, reviewText);
         rc.close();
     }
 
@@ -118,6 +120,7 @@ public class Main_program {
                 break;
             }
             System.out.println(r[i].getTitle());
+            System.out.println(r[i].getBody());
             score += r[i].getScore();
             amt += 1;
         }
@@ -129,6 +132,7 @@ public class Main_program {
             System.out.println("trip rating: " + rating);
         }
     }
+
 
 
     //DEBUG MODE
@@ -175,7 +179,7 @@ public class Main_program {
                 System.out.println(allTrips[i].getName() + " : " + allTrips[i].getPrice() + " : " +allTrips[i].getId());
             }
             while (cont) {
-                System.out.println("What would you like to do?\ns: search \np :sort based on price \nb: book \nr: review trip\nu: user info\nc: change user \nq: quit");
+                System.out.println("What would you like to do?\ns: search \np :sort based on price \nb: book \nr: review trip\nsr: see review \nu: user info\nc: change user \nq: quit");
                 String input = StdIn.readString();
                 if (input.equals("q")){
                     System.out.println("Exiting program");
@@ -195,7 +199,7 @@ public class Main_program {
                     change();
                 }
                 else if (input.equals("r")){
-                    review();
+                    review(uc.getUser());
                 }
                 else if (input.equals("u")){
                     info(uc.getUser());
@@ -203,6 +207,9 @@ public class Main_program {
                 //Debugging not in final project
                 else if (input.equals("d")){
                     debug();
+                }
+                else if (input.equals("sr")){
+                    seeReview();
                 }
                 else{
                     System.out.println("invalid input");
