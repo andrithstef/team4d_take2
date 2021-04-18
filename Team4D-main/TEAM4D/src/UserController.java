@@ -10,11 +10,11 @@ public class UserController{
         dl = new UserDataLayer();
     }
 
-    public void login(String userName, String email) throws Exception{
-        ResultSet rs = dl.getUser(userName,email);
+    public void login(String userName) throws Exception{
+        ResultSet rs = dl.getUser(userName);
         if (rs.next()){
             System.out.println("logging in...");
-            login = new User(userName, email, rs.getInt("id"));
+            login = new User(userName,  rs.getInt("id"));
         }
         else{
             System.out.println("no such user exists");
@@ -27,9 +27,9 @@ public class UserController{
         System.out.println("*********************");
     }
 
-    public void createUser(String userName, String email) throws Exception{
-        int id = dl.createUser(userName, email);
-        login = new User(userName, email, id);
+    public void createUser(String userName) throws Exception{
+        int id = dl.createUser(userName);
+        login = new User(userName, id);
     }
 
     public void close() throws Exception{
@@ -50,7 +50,7 @@ public class UserController{
 
     public static void main(String[] args) throws Exception{
         UserController uc = new UserController();
-        uc.login("temp", "basicEmal123");
+        uc.login("temp");
         User logged = uc.getUser();
         uc.printAll();
         if (uc.isLogin()) {

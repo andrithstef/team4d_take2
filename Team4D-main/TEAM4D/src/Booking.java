@@ -1,20 +1,29 @@
 public class Booking{
 
     private User user;
-    private Trip trip;
+    private String tripName;
+    private int tripId;
     private int bookingId;
 
-    public Booking(User user, Trip trip){
+    public Booking(User user, String tripName, int tripId, int bookingId){
         this.user = user;
-        this.trip = trip;
-        this.bookingId = user.getId()+trip.getId();
+        this.tripName = tripName;
+        this.tripId = tripId;
+        this.bookingId = bookingId;
     }
     public User getUser(){
         return user;
     }
-    public Trip getTrip(){
-        return trip;
+
+
+    public String getTripName(){
+        return tripName;
     }
+
+    public int getTripId(){
+        return tripId;
+    }
+
     public int getBookingId(){
         return bookingId;
     }

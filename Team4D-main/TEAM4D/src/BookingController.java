@@ -20,6 +20,16 @@ public class BookingController{
         dl.printAll();
     }
 
+    public Booking[] getBookings(User user) throws Exception{
+        ResultSet rs = dl.getBookings(user.getName());
+        bookingList = new Booking[20];
+        int index = 0;
+        while (rs.next()){
+            bookingList[index++] = new Booking(user, rs.getString("tripName"), rs.getInt("tripId"),rs.getInt("bookingId"));
+        }
+        return bookingList;
+    }
+
     public void connect() throws Exception{
         dl.connect();
     }
@@ -32,7 +42,8 @@ public class BookingController{
     public void createBooking(User user, Trip trip) throws Exception{
         String userName = user.getName();
         int tripId = trip.getId();
-        dl.createBooking(userName,tripId);
+        String tripName = trip.getName();
+        dl.createBooking(userName, tripName, tripId);
     }
     public void cancelBooking(Booking booking) {
         return;
@@ -42,22 +53,12 @@ public class BookingController{
     }
 
     public static void main(String[] args) throws Exception{
-        UserController u = new UserController();
-        TripController t = new TripController();
-        BookingController b = new BookingController();
-        u.printAll();
-        t.printAll();
-        u.createUser("andrith", "ats21");
-        t.search();
-        u.close();
-        t.close();
-        Trip[] trips = t.getTripList();
-        for (int i = 0; i<trips.length; i++){
-            if (trips[i] == null){
-                break;
-            }
-            b.createBooking(u.getUser(), trips[i]);
-        }
-        b.printAll();
+        User a = new User("andri",1);
+        TripController tc = new TripController();
+        tc.sort();
+        Trip b = tc.getTripList()[0];
+        tc.close();
+        BookingController bc = new BookingController();
+        bc.createBooking(a,b);
     }
 }

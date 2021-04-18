@@ -25,7 +25,10 @@ public class UserDataLayer {
             myStatement.executeUpdate("DROP TABLE IF EXISTS Users");
 
             // Br til töfluna
-            myStatement.executeUpdate("CREATE TABLE Users(userName TEXT PRIMARY KEY, email TEXT, id INTEGER UNIQUE)");
+
+            myStatement = conn.createStatement();
+            myStatement.executeUpdate("Drop Table User");
+            myStatement.executeUpdate("CREATE TABLE User(userName TEXT PRIMARY KEY, id INTEGER UNIQUE)");
             */
         }
         catch (SQLException e) {
@@ -38,11 +41,11 @@ public class UserDataLayer {
         PreparedStatement p = conn.prepareStatement(stmnt);
         ResultSet rs = p.executeQuery();
         while (rs.next()){
-            System.out.println(rs.getString("userName") + " : " + rs.getString("email"));
+            System.out.println(rs.getString("userName"));
         }
     }
 
-    int createUser(String userName, String email) throws Exception{
+    int createUser(String userName) throws Exception{
         // ? er breyta, setstring setur gildi
         String stmnt = "SELECT * FROM User WHERE userName == ?";
         PreparedStatement p = conn.prepareStatement(stmnt);
@@ -53,10 +56,9 @@ public class UserDataLayer {
             return -1;
         }
         System.out.println("Creating new user...");
-        stmnt = "INSERT INTO User(userName, email) VALUES(?,?)";
+        stmnt = "INSERT INTO User(userName) VALUES(?)";
         p = conn.prepareStatement(stmnt);
         p.setString(1, userName);
-        p.setString(2,email);
         p.executeUpdate();
         stmnt = "SELECT id FROM User WHERE userName == ?";
         p = conn.prepareStatement(stmnt);
@@ -67,11 +69,10 @@ public class UserDataLayer {
         return id;
     }
 
-    ResultSet getUser(String userName, String email) throws Exception{
-        String stmnt = "SELECT * from User WHERE userName == ? AND email == ?";
+    ResultSet getUser(String userName) throws Exception{
+        String stmnt = "SELECT * from User WHERE userName == ?";
         PreparedStatement p = conn.prepareStatement(stmnt);
         p.setString(1, userName);
-        p.setString(2, email);
         ResultSet rs = p.executeQuery();
         return rs;
     }
@@ -86,27 +87,5 @@ public class UserDataLayer {
 
     void connect() throws Exception{
         conn = DriverManager.getConnection("jdbc:sqlite:team4d.db");
-    }
-
-    public static void main(String[] args) throws Exception {
-        UserDataLayer a = null;
-        try{
-            a = new UserDataLayer();
-            a.printAll();
-        }
-        catch (SQLException e) {
-            System.err.println(e.getMessage());
-        }
-        finally {
-            try {
-                if (a != null) {
-                    if (a.getConn() != null)
-                        a.close();
-                }
-            }
-            catch (SQLException e) {
-                System.err.println(e);
-            }
-        }
     }
 }

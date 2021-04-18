@@ -53,10 +53,9 @@ public class Main_program {
 
     public void change() throws Exception{
         uc.connect();
-        System.out.println("please enter username and email:");
+        System.out.println("please enter username:");
         String userName = StdIn.readString();
-        String email = StdIn.readString();
-        uc.createUser(userName,email);
+        uc.createUser(userName);
         System.out.println("Currently logged in as:");
         System.out.println(uc.getUser().getName() + "\n");
     }
@@ -71,6 +70,7 @@ public class Main_program {
             System.out.println("No seats availible");
         }
         else {
+            bc.connect();
             bc.createBooking(uc.getUser(), desired);
             bc.printAll();
             bc.close();
@@ -80,18 +80,30 @@ public class Main_program {
         }
     }
 
+    public void info(User user) throws Exception{
+        bc.connect();
+        Booking[] bookings = bc.getBookings(user);
+        bc.close();
+        for (int i = 0; i<bookings.length;i++){
+            if (bookings[i] == null){
+                break;
+            }
+            System.out.println(bookings[i].getTripName() + " : "+ bookings[i].getTripId());
+        }
+    }
+
 
     public void run() throws Exception{
         boolean cont = true;
-        System.out.println("please enter username and email:");
+        System.out.println("please enter username:");
         String userName = StdIn.readString();
-        String email = StdIn.readString();
-        uc.createUser(userName,email);
+        uc.createUser(userName);
         if (uc.isLogin()){
             uc.close();
             System.out.println("Currently logged in as:");
             System.out.println(uc.getUser().getName() + "\n");
             tc.search();
+            tc.close();
             Trip[] allTrips = tc.getTripList();
             System.out.println("All availible trips:\nname:price:id");
             for (int i = 0; i<allTrips.length; i++){
@@ -101,17 +113,14 @@ public class Main_program {
                 System.out.println(allTrips[i].getName() + " : " + allTrips[i].getPrice() + " : " +allTrips[i].getId());
             }
             while (cont) {
-                System.out.println("What would you like to do?\ns: search \np :sort based on price \nb: book \nr: review trip\nc: change user \nq: quit");
+                System.out.println("What would you like to do?\ns: search \np :sort based on price \nb: book \nr: review trip\nu: user info\nc: change user \nq: quit");
                 String input = StdIn.readString();
                 if (input.equals("q")){
                     System.out.println("Exiting program");
                     cont = false;
                     break;
                 }
-                if (!input.equals("s") && !input.equals("b") && !input.equals("r")){
-                    System.out.println("invalid input");
-                }
-                else if (input.equals("s")){
+                if (input.equals("s")){
                     search();
                 }
                 else if (input.equals("p")){
@@ -122,6 +131,18 @@ public class Main_program {
                 }
                 else if (input.equals("c")){
                     change();
+                }
+                else if (input.equals("u")){
+                    info(uc.getUser());
+                }
+                //Debugging not in final
+                else if (input.equals("d")){
+                    uc.connect();
+                    uc.printAll();
+                    uc.close();
+                }
+                else{
+                    System.out.println("invalid input");
                 }
             }
         }
