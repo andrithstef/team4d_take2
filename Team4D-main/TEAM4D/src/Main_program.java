@@ -91,7 +91,17 @@ public class Main_program {
             System.out.println(bookings[i].getTripName() + " : "+ bookings[i].getTripId());
         }
     }
+    public void review(User user, Trip trip) throws Exception{
+        rc.connect();
+        System.out.println("Please enter score, title of review, then review text:");
+        int tripScore = StdIn.readInt();
+        String reviewTitle = StdIn.readString();
+        String reviewText = StdIn.readString();
+        rc.createReview(user, trip, tripScore, reviewTitle, reviewText);
+        rc.close();
 
+
+    }
 
     public void run() throws Exception{
         boolean cont = true;
