@@ -71,7 +71,7 @@ public class BookingDataLayer {
         ResultSet rs = p.executeQuery();
         System.out.println("All bookings");
         while(rs.next()){
-            System.out.println(rs.getString("userName") + " : " + rs.getString("tripId"));
+            System.out.println(rs.getString("userName") + " : " + rs.getString("tripName") + "  : " + rs.getString("tripId"));
         }
         System.out.println("**********************");
     }
