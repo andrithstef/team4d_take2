@@ -24,13 +24,13 @@ public class ReviewDataLayer {
             //Ef við viljum eyða töflunni, búa til nýja og fylla inn í hana
             /////////////////////////////////////////////////////////////////
             // Eyða töflu ef er til (Ekki gert í loka verkefninu)
-
+            /*
             myStatement = conn.createStatement();
             myStatement.executeUpdate("DROP TABLE IF EXISTS Reviews");
 
             // Br til töfluna
             myStatement.executeUpdate("CREATE TABLE Reviews(user TEXT, tripId INTEGER, score INTEGER, body TEXT, PRIMARY KEY(user, tripId))");
-
+            */
             /////////////////////////////////////////////////////////////////
 
 

@@ -39,11 +39,11 @@ public class BookingController{
     }
 
 
-    public void createBooking(User user, Trip trip) throws Exception{
+    public void createBooking(User user, Trip trip, int numberSeats) throws Exception{
         String userName = user.getName();
         int tripId = trip.getId();
         String tripName = trip.getName();
-        dl.createBooking(userName, tripName, tripId);
+        dl.createBooking(userName, tripName, tripId, numberSeats);
     }
     public void cancelBooking(Booking booking) {
         return;
@@ -52,13 +52,4 @@ public class BookingController{
         return;
     }
 
-    public static void main(String[] args) throws Exception{
-        User a = new User("andri",1);
-        TripController tc = new TripController();
-        tc.sort();
-        Trip b = tc.getTripList()[0];
-        tc.close();
-        BookingController bc = new BookingController();
-        bc.createBooking(a,b);
-    }
 }

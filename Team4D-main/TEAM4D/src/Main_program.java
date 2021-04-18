@@ -65,18 +65,20 @@ public class Main_program {
         tc.connect();
         System.out.println("Please enter the trip ID:");
         int id = StdIn.readInt();
+        System.out.println("Please enter number of seats you would like to book:");
+        int numberSeats = StdIn.readInt();
         Trip desired = tc.getTrip(id);
         tc.close();
-        if (desired.getAvailableSeats() <= 0){
-            System.out.println("No seats availible");
+        if (desired.getAvailableSeats() <= numberSeats){
+            System.out.println("insufficient seats");
         }
         else {
             bc.connect();
-            bc.createBooking(uc.getUser(), desired);
+            bc.createBooking(uc.getUser(), desired, numberSeats);
             bc.printAll();
             bc.close();
             tc.connect();
-            tc.removeSeat(desired);
+            tc.removeSeats(desired, numberSeats);
             tc.close();
         }
     }

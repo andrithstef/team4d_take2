@@ -107,12 +107,21 @@ public class TripDataLayer {
     }
 
     public void printSeats() throws Exception{
-        String stmnt = "SELECT name, availableSeats FROM Trip";
+        String stmnt = "SELECT name, availableSeats, id FROM Trip";
         PreparedStatement p = conn.prepareStatement(stmnt);
         ResultSet rs = p.executeQuery();
+        System.out.println("name : seats : id");
         while (rs.next()){
-            System.out.println(rs.getString("name") + " : " + rs.getString("availableSeats"));
+            System.out.println(rs.getString("name") + " : " + rs.getString("availableSeats") + " : " + rs.getString("id"));
         }
+    }
+
+    public void addSeat(int id, int seats) throws Exception{
+        String stmnt = "Update trip set(availableSeats) == ? WHERE id == ?";
+        PreparedStatement p = conn.prepareStatement(stmnt);
+        p.setString(1,Integer.toString(seats));
+        p.setString(2,Integer.toString(id));
+        p.executeUpdate();
     }
 
     public static void main(String[] args) throws Exception {

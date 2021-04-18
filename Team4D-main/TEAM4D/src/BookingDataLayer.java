@@ -22,12 +22,12 @@ public class BookingDataLayer {
             //Ef við viljum eyða töflunni, búa til nýja og fylla inn í hana
             /////////////////////////////////////////////////////////////////
             // Eyða töflu ef er til (Ekki gert í loka verkefninu)
-            /*
+
             myStatement = conn.createStatement();
             // Br til töfluna
-            myStatement.executeUpdate("DRop table Booking");
-            myStatement.executeUpdate("CREATE TABLE Booking(userName TEXT, tripName TEXT, tripId INTEGER, bookingID INTEGER UNIQUE, PRIMARY KEY(userName,tripid))");
-            */
+            myStatement.executeUpdate("DROP table IF EXISTS Booking");
+            myStatement.executeUpdate("CREATE TABLE Booking(userName TEXT, tripName TEXT, tripId INTEGER, bookingID INTEGER UNIQUE, numberSeats INTEGER, PRIMARY KEY(userName,tripid))");
+
 
 
             /////////////////////////////////////////////////////////////////
@@ -38,7 +38,7 @@ public class BookingDataLayer {
         }
     }
 
-    public void createBooking(String userName, String tripName, int tripId) throws Exception{
+    public void createBooking(String userName, String tripName, int tripId, int numberSeats) throws Exception{
         String stmnt = "SELECT * FROM Booking WHERE userName == ? AND tripId == ?";
         PreparedStatement p = conn.prepareStatement(stmnt);
         p.setString(1, userName);
@@ -48,11 +48,12 @@ public class BookingDataLayer {
             System.out.println("This booking already exists");
             return;
         }
-        stmnt = "INSERT INTO Booking(userName, tripName, TripId) VALUES (?,?,?)";
+        stmnt = "INSERT INTO Booking(userName, tripName, TripId, numberSeats) VALUES (?,?,?,?)";
         p = conn.prepareStatement(stmnt);
         p.setString(1, userName);
         p.setString(2,tripName);
         p.setString(3, Integer.toString(tripId));
+        p.setString(4, Integer.toString(numberSeats));
         p.executeUpdate();
         System.out.println("Booking created");
     }
