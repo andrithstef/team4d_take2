@@ -22,12 +22,12 @@ public class BookingDataLayer {
             //Ef við viljum eyða töflunni, búa til nýja og fylla inn í hana
             /////////////////////////////////////////////////////////////////
             // Eyða töflu ef er til (Ekki gert í loka verkefninu)
-
+            /*
             myStatement = conn.createStatement();
             // Br til töfluna
             myStatement.executeUpdate("DROP table IF EXISTS Booking");
             myStatement.executeUpdate("CREATE TABLE Booking(userName TEXT, tripName TEXT, tripId INTEGER, bookingID INTEGER UNIQUE, numberSeats INTEGER, PRIMARY KEY(userName,tripid))");
-
+            */
 
 
             /////////////////////////////////////////////////////////////////
@@ -35,6 +35,32 @@ public class BookingDataLayer {
         }
         catch (SQLException e) {
             System.err.println(e.getMessage());
+        }
+    }
+
+    public int deleteBooking(String userName, int tripId) throws Exception {
+        String stmnt = "SELECT numberSeats FROM Booking where userName == ? AND tripID == ?";
+        PreparedStatement p = conn.prepareStatement(stmnt);
+        p.setString(1, userName);
+        p.setInt(2,tripId);
+        ResultSet rs = p.executeQuery();
+        try {
+            rs.next();
+            int numSeats = 0;
+            numSeats = rs.getInt("numberSeats");
+            if (numSeats == 0) {
+                return 0;
+            }
+            stmnt = "DELETE FROM Booking WHERE userName==? AND tripId==?";
+            p = conn.prepareStatement(stmnt);
+            p.setString(1, userName);
+            p.setInt(2, tripId);
+            p.executeUpdate();
+            return numSeats;
+        }
+        catch (Exception e){
+            System.out.println("This booking does not exist");
+            return 0;
         }
     }
 

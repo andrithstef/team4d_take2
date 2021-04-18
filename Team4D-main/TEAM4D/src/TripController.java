@@ -61,9 +61,9 @@ public class TripController {
         dl.removeSeat(id, seats);
     }
 
-    public void addSeat(Trip trip) throws Exception {
+    public void addSeat(Trip trip, int numSeats) throws Exception {
         int id = trip.getId();
-        int seats = trip.getAvailableSeats()+1;
+        int seats = trip.getAvailableSeats()+numSeats;
         dl.addSeat(id, seats);
     }
 

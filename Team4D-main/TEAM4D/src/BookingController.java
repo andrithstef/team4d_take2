@@ -30,6 +30,13 @@ public class BookingController{
         return bookingList;
     }
 
+    public int cancelBooking(User user, Trip trip) throws Exception{
+        String userName = user.getName();
+        int tripId = trip.getId();
+        int numSeats = dl.deleteBooking(userName, tripId);
+        return numSeats;
+    }
+
     public void connect() throws Exception{
         dl.connect();
     }

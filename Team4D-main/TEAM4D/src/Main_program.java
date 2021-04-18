@@ -69,13 +69,12 @@ public class Main_program {
         int numberSeats = StdIn.readInt();
         Trip desired = tc.getTrip(id);
         tc.close();
-        if (desired.getAvailableSeats() <= numberSeats){
+        if (desired.getAvailableSeats() < numberSeats){
             System.out.println("insufficient seats");
         }
         else {
             bc.connect();
             bc.createBooking(uc.getUser(), desired, numberSeats);
-            bc.printAll();
             bc.close();
             tc.connect();
             tc.removeSeats(desired, numberSeats);
@@ -87,20 +86,42 @@ public class Main_program {
         bc.connect();
         Booking[] bookings = bc.getBookings(user);
         bc.close();
-        System.out.println("reviews");
+        System.out.println("bookings");
+        int amt = 0;
         for (int i = 0; i<bookings.length;i++){
             if (bookings[i] == null){
                 break;
             }
             System.out.println(bookings[i].getTripName() + " : "+ bookings[i].getTripId());
+            amt++;
+        }
+        if (amt == 0){
+            System.out.println("you have no bookings");
         }
     }
+
     public void review(User user) throws Exception {
         System.out.println("Select ID of trip to review");
         int id = StdIn.readInt();
         tc.connect();
         Trip trip = tc.getTrip(id);
         tc.close();
+        bc.connect();
+        Booking[] bookings = bc.getBookings(user);
+        bc.close();
+        boolean isBooked= false;
+        for (int i = 0; i<bookings.length; i++){
+            if (bookings[i] == null){
+                break;
+            }
+            if (bookings[i].getTripId() == id){
+                isBooked = true;
+            }
+        }
+        if (!isBooked){
+            System.out.println("you have not booked this trip");
+            return;
+        }
         rc.connect();
         if (trip == null){
             return;
@@ -139,11 +160,12 @@ public class Main_program {
             rc.close();
             float score = 0;
             float amt = 0;
+            String reviews = "";
             for (int i = 0; i<r.length; i++){
                 if (r[i] == null){
                     break;
                 }
-                System.out.println(r[i].getBody());
+                reviews += r[i].getBody() + "\n";
                 score += r[i].getScore();
                 amt += 1;
             }
@@ -152,7 +174,8 @@ public class Main_program {
             }
             else {
                 float rating = score/amt;
-                System.out.println("trip rating: " + rating);
+                System.out.println("trip rating: " + rating + "\n");
+                System.out.println(reviews);
             }
         }
         catch (Exception e){
@@ -161,8 +184,27 @@ public class Main_program {
 
     }
 
-
-
+    public void cancel() throws Exception{
+        tc.connect();
+        System.out.println("Please enter the trip ID:");
+        int id = StdIn.readInt();
+        Trip desired = tc.getTrip(id);
+        tc.close();
+        if (desired == null){
+            System.out.println("this booking does not exist");
+            return;
+        }
+        bc.connect();
+        int numSeats = bc.cancelBooking(uc.getUser(), desired);
+        bc.close();
+        tc.connect();
+        tc.addSeat(desired, numSeats);
+        tc.close();
+        if (numSeats > 0) {
+            System.out.println("Canceled booking with trip ID: " + id);
+        }
+    }
+    
     //DEBUG MODE
     public void debug() throws Exception{
         System.out.println("u: show all users\nb: show all bookings\ns: print seats");
@@ -199,7 +241,7 @@ public class Main_program {
             tc.search();
             tc.close();
             Trip[] allTrips = tc.getTripList();
-            System.out.println("All availible trips:\nname:price:id");
+            System.out.println("All available trips:\nname:price:id");
             for (int i = 0; i<allTrips.length; i++){
                 if (allTrips[i] == null){
                     break;
@@ -207,7 +249,7 @@ public class Main_program {
                 System.out.println(allTrips[i].getName() + " : " + allTrips[i].getPrice() + " : " +allTrips[i].getId());
             }
             while (cont) {
-                System.out.println("What would you like to do?\ns: search \np :sort based on price \nb: book \nr: review trip\nsr: see review \nu: user info\nc: change user \nq: quit");
+                System.out.println("\nWhat would you like to do?\ns: search \np :sort based on price \nb: book\ncancel: cancel trip \nr: review trip\nsr: see review \nu: user info\nc: change user \nq: quit");
                 String input = StdIn.readString();
                 if (input.equals("q")){
                     System.out.println("Exiting program");
@@ -231,6 +273,9 @@ public class Main_program {
                 }
                 else if (input.equals("u")){
                     info(uc.getUser());
+                }
+                else if (input.equals("cancel")) {
+                    cancel();
                 }
                 //Debugging not in final project
                 else if (input.equals("d")){
