@@ -39,11 +39,16 @@ public class TripController {
 
     public Trip getTrip(int ID) throws Exception{
         ResultSet rs = dl.getTrip(ID);
-        rs.next();
-        Trip result = new Trip(rs.getString("name"), rs.getInt("id"), rs.getInt("price"), rs.getString("location"), rs.getInt("availableSeats"),
-                rs.getBoolean("accessibility"), rs.getBoolean("meals"), rs.getBoolean("vegan"), rs.getString("activityType"), rs.getDouble("popularity"),
-                rs.getDouble("discount"), rs.getString("time"), rs.getDouble("rating"));
-        return result;
+        if (rs.next()) {
+            Trip result = new Trip(rs.getString("name"), rs.getInt("id"), rs.getInt("price"), rs.getString("location"), rs.getInt("availableSeats"),
+                    rs.getBoolean("accessibility"), rs.getBoolean("meals"), rs.getBoolean("vegan"), rs.getString("activityType"), rs.getDouble("popularity"),
+                    rs.getDouble("discount"), rs.getString("time"), rs.getDouble("rating"));
+            return result;
+        }
+        else{
+            System.out.println("This trip does not exist");
+            return null;
+        }
     }
 
     public void printSeats() throws Exception{

@@ -26,7 +26,6 @@ public class ReviewController {
             reviewList[index++] = new Review(rs.getString("user"),
                     rs.getInt("tripId"),
                     rs.getInt("score"),
-                    rs.getString("title"),
                     rs.getString("body"));
         }
         return reviewList;
@@ -46,9 +45,9 @@ public class ReviewController {
     }
 
     //Býr til nýtt review
-    public void createReview(User user, int tripId, int score, String title, String body) throws Exception {
+    public void createReview(User user, int tripId, int score,  String body) throws Exception {
 
-        rdl.createNewReview(user.getName(), tripId, score, title, body);
+        rdl.createNewReview(user.getName(), tripId, score, body);
     }
 
     public void close() throws Exception{

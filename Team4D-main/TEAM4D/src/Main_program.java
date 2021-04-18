@@ -1,7 +1,7 @@
 import com.sun.tools.javac.Main;
 import edu.princeton.cs.algs4.StdIn;
 import edu.princeton.cs.algs4.StdOut;
-
+import java.util.*;
 import java.awt.print.Book;
 
 
@@ -85,6 +85,7 @@ public class Main_program {
         bc.connect();
         Booking[] bookings = bc.getBookings(user);
         bc.close();
+        System.out.println("reviews");
         for (int i = 0; i<bookings.length;i++){
             if (bookings[i] == null){
                 break;
@@ -95,42 +96,67 @@ public class Main_program {
     public void review(User user) throws Exception {
         System.out.println("Select ID of trip to review");
         int id = StdIn.readInt();
+        tc.connect();
+        Trip trip = tc.getTrip(id);
+        tc.close();
         rc.connect();
-        System.out.println("Please enter score, title of review, then review text:");
-        int tripScore = StdIn.readInt();
-        String reviewTitle = StdIn.readString();
-        String reviewText = StdIn.readString();
-        rc.createReview(user, id, tripScore, reviewTitle, reviewText);
-        rc.close();
+        if (trip == null){
+            return;
+        }
+        System.out.println("Please enter score\n0-5");
+        Scanner sc= new Scanner(System.in);
+        String temp = sc.nextLine();
+        try{
+            int tripScore = Integer.parseInt(temp);
+            if ((0 > tripScore) || (tripScore > 5)){
+                System.out.println("score must be between 0 and 5");
+                review(user);
+                return;
+            }
+            System.out.println("Please enter text");
+            String reviewText = sc.nextLine();
+            rc.createReview(user, id, tripScore, reviewText);
+            rc.close();
+        }
+        catch (Exception e){
+            System.out.println("invalid input");
+            return;
+        }
     }
 
     public void seeReview() throws Exception{
         System.out.println("Select ID of trip to see review of");
         String id = StdIn.readString();
-        tc.connect();
-        Trip trip = tc.getTrip(Integer.parseInt(id));
-        tc.close();
-        rc.connect();
-        Review[] r = rc.getReviewList(trip);
-        rc.close();
-        int score = 0;
-        int amt = 0;
-        for (int i = 0; i<r.length; i++){
-            if (r[i] == null){
-                break;
+        try{
+            tc.connect();
+            Trip trip = tc.getTrip(Integer.parseInt(id));
+            tc.close();
+
+            rc.connect();
+            Review[] r = rc.getReviewList(trip);
+            rc.close();
+            float score = 0;
+            float amt = 0;
+            for (int i = 0; i<r.length; i++){
+                if (r[i] == null){
+                    break;
+                }
+                System.out.println(r[i].getBody());
+                score += r[i].getScore();
+                amt += 1;
             }
-            System.out.println(r[i].getTitle());
-            System.out.println(r[i].getBody());
-            score += r[i].getScore();
-            amt += 1;
+            if (amt == 0){
+                System.out.println("this trip has no reviews");
+            }
+            else {
+                float rating = score/amt;
+                System.out.println("trip rating: " + rating);
+            }
         }
-        if (amt == 0){
-            System.out.println("this trip has no reviews");
+        catch (Exception e){
+            System.out.println("this trip does not exist");
         }
-        else {
-            float rating = score / amt;
-            System.out.println("trip rating: " + rating);
-        }
+
     }
 
 

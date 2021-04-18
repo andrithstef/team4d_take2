@@ -24,13 +24,13 @@ public class ReviewDataLayer {
             //Ef við viljum eyða töflunni, búa til nýja og fylla inn í hana
             /////////////////////////////////////////////////////////////////
             // Eyða töflu ef er til (Ekki gert í loka verkefninu)
-            /*
+
             myStatement = conn.createStatement();
             myStatement.executeUpdate("DROP TABLE IF EXISTS Reviews");
 
             // Br til töfluna
-            myStatement.executeUpdate("CREATE TABLE Reviews(user TEXT, tripId INTEGER, score INTEGER, title TEXT, body TEXT, PRIMARY KEY(user, tripId))");
-            */
+            myStatement.executeUpdate("CREATE TABLE Reviews(user TEXT, tripId INTEGER, score INTEGER, body TEXT, PRIMARY KEY(user, tripId))");
+
             /////////////////////////////////////////////////////////////////
 
 
@@ -47,13 +47,12 @@ public class ReviewDataLayer {
         ResultSet rs = p.executeQuery();
         while (rs.next()){
             System.out.println(rs.getString("user") + " : " + rs.getString("tripId")
-                    + " : " + rs.getString("score") + " : " + rs.getString("title")
-                    + " : " + rs.getString("body"));
+                    + " : " + rs.getString("score") + " : " + rs.getString("body"));
         }
     }
 
     //Býr til nýtt review
-    void createNewReview(String user, int id, int score, String title, String body) throws Exception{
+    void createNewReview(String user, int id, int score, String body) throws Exception{
         String stmnt = "SELECT * FROM Reviews WHERE user==? AND tripId==?";
         PreparedStatement p = conn.prepareStatement(stmnt);
         p.setString(1, user);
@@ -63,13 +62,12 @@ public class ReviewDataLayer {
             System.out.println("Review already exists");
             return;
         }
-        stmnt = "INSERT INTO Reviews(user, tripId, score, title, body) VALUES(?,?,?,?,?)";
+        stmnt = "INSERT INTO Reviews(user, tripId, score, body) VALUES(?,?,?,?)";
         p = conn.prepareStatement(stmnt);
         p.setString(1, user);
         p.setInt(2,id);
         p.setInt(3,score);
-        p.setString(4,title);
-        p.setString(5,body);
+        p.setString(4,body);
         p.executeUpdate();
     }
 
